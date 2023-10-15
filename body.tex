@@ -1,0 +1,28 @@
+\documentclass[a4paper, fontsize=14pt]{article}
+\usepackage{kursowaja}
+\setcounter{page}{0} %в зависимости от того, какой по счёту страницей должно быть оглавление!
+
+\begin{document}
+
+\tableofcontents
+
+\newpage
+
+\section*{Введение}
+\addcontentsline{toc}{section}{Введение}
+
+% ...
+
+\newpage
+
+\section*{Заключение}
+\addcontentsline{toc}{section}{Заключение}
+
+\newpage
+
+\addcontentsline{toc}{section}{Список литературы}
+
+\begin{thebibliography}{5}
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,38 @@
+\RequirePackage{scrextend}
+\RequirePackage{indentfirst, fancyhdr, amsfonts, mathtools, amssymb, enumitem}
+\RequirePackage{titlesec} %работа с рубрикацией
+\RequirePackage{tocloft} %настройки оглавления
+\RequirePackage[T2A]{fontenc}
+\RequirePackage{inputenc} %[utf8x]
+\RequirePackage[russian]{babel}
+\RequirePackage[left=3.7cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\RequirePackage{tempora} %настраиваем шрифт типа TNR                                   
+\RequirePackage{newtxmath} %делаем шрифт формул похожим на TNR
+\RequirePackage{hyperref} %кликабельное оглавление
+\linespread{1}
+
+\setlist{topsep=\lineskip,leftmargin=0pt, itemindent=2\parindent}
+\setlist[enumerate]{noitemsep,label=\arabic*.} %для создания нумерованных списков рекомендую использовать enumerate -- с ним проще контролировать между
+%\renewcommand{\itemindent}{\parindent}
+
+%НАСТРОЙКИ ОГЛАВЛЕНИЯ
+\renewcommand{\cftsecaftersnum}{.} %точки после номеров разделов и подразделов в оглавлении
+\renewcommand{\cftsubsecaftersnum}{.}
+\renewcommand{\cftsecfont}{\normalfont} %разделы в оглавлении пишутся обычным (не жирным) шрифтом
+\renewcommand{\cftsecpagefont}{\normalfont} %соответствующие им страницы тоже
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} %расставляем точки между названиями разделов и их страницами
+\addto\captionsrussian{\renewcommand\contentsname{СОДЕРЖАНИЕ}} %хотим, чтобы слово "Содержание" писалось капсом
+\renewcommand{\cfttoctitlefont}{\hfil\bfseries} %слово СОДЕРЖАНИЕ по центру жирным
+\renewcommand{\cftaftertoctitle}{\hfill}
+\setlength{\cftsubsecindent}{0pt} %убираем отступ перед номерами подразделов, всё содержание выровнено по своему левому краю
+\setlength{\cftbeforesecskip}{0pt} %убираем большой отступ перед новым разделом
+
+%НАСТРОЙКИ РУБРИКАЦИИ
+\titleformat*{\section}{\center\bf\MakeUppercase} %названия разделов и подразделов по середине жирным шрифтом; названия разделов, к тому же -- капсом
+\titleformat*{\subsection}{\center\bf}
+\titlelabel{\thetitle.\quad} %название раздела и его номер отделены точкой
+
+%НАСТРОЙКИ БИБЛИОГРАФИИ
+\makeatletter
+\renewcommand{\@biblabel}[1]{#1.} %хотим, чтобы в списке литературы номера источников писались в формате "No. <...>", а не "[No] <...>"
+\makeatother

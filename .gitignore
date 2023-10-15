@@ -301,5 +301,5 @@ TSWLatexianTemp*
 #*Notes.bib
 
 
+!out/viscoelatic-wave-sim.pdf
 out/*
-!out/viscoelatic-wave-sim.tex

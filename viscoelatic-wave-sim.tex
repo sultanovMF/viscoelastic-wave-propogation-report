@@ -10,11 +10,213 @@
 
 \section*{Введение}
 \addcontentsline{toc}{section}{Введение}
-
+\newpage
 % ...
 
-\newpage
 
+\section*{Уравнение распространения волн в сейсмической среде с затуханием} 
+\addcontentsline{toc}{section}{Уравнение распространения волн в сейсмической среде с затуханием}
+
+На практике сейсмические среды с эффектом затухания описываются линейной теорией вязкоупругости.
+Эта теория учитывает как упругие, так и вязкие свойства материалов,
+позволяя более точно моделировать поведение материалов под воздействием сейсмических нагрузок. 
+Подробную информацию можно найти в книгах \cite{Christenses,Mainardi,Carcione,Borcherdt}, здесь же ограничимся
+приведением основных формул и математических формулировок в контексте задачи распространения волн.
+
+Будем рассматривать инфинитезимальные напряжения ($\varepsilon_{ij}$) и малые перемещения ($u_{ij}$).
+В этом случае они будут связаны уравнением:
+
+\begin{equation}
+    \label{eq:strain_u_rel}
+    \varepsilon_{ij} = \frac{1}{2} \left( \frac{\partial u_i}{\partial x_j} + \frac{\partial u_j}{\partial x_i}\, \right). 
+\end{equation}
+
+Также будем считать, что история деформаций ($\varepsilon_{ij}(t)$) предполагается непрерывной, а функционал преобразующий историю изменения деформаций ($\varepsilon_{ij}(t)$) в соответствующую историю изменения напряжений ($\sigma_{ij}(t)$) предполагается линейным (подробнее см. \cite{Christenses})
+
+Тогда в самом общем виде этот функционал, который будем называть определяющим уравнением, может быть записывается следующим образом:
+
+\begin{equation}
+    \label{eq:hooks_law}
+    \sigma_{ij}(t) = \int_{-\infty}^{\infty} G_{ijkl} (t - s) \frac{\partial \varepsilon_{kl} (s)}{\partial s} d s = G_{ijkl}(t) \ast  \frac{\partial \varepsilon_{kl} (t)}{\partial t} ,
+\end{equation}
+где $G_{ijkl}(t)$ нызывается релаксационным тензором, причем компоненты тензора $G_{ijkl}$ равны нулю при $t < 0$.
+
+Такая запись определяющего соотношения позволяет увидеть, что оно удовлетворяет двум фундаментальным гипотезам теории линейной вязкоупругости:
+\begin{enumerate}
+    \item инвариантность по отношению к переносу по времени;
+    \item принцип причинности (отклик системы на возмущение зависит только от предыдущих событий во времени).
+\end{enumerate}
+
+Поскольку $\sigma_{ij}$ и $\varepsilon_{ij}$ являются симметричными тензорами, то $G_{ijkl}$ также симметричный тензор: $G_{ijkl} = G_{jikl} = G_{ijlk}$.
+
+
+Для изотропной среды функция релаксация имеет вид:
+\begin{equation}
+    \label{eq:relax_function}
+    G_{ijkl} (t) = \frac{1}{3} \left( G_{b}(t) - G_{s}(t) \right) \delta_{ij} \delta_{kl} + \frac{1}{2} G_s \left( \delta_{ik} \delta_{jl} + \delta_{il} \delta_{jk}\right), 
+\end{equation}
+где $G_s$ и $G_b$ пространственно независимые релаксационные функции, характеризующие сдвиговые и объемные свойства материала при соответствующих деформациях; 
+$\delta_{ij}$ --~  символ Кронекера;
+
+Часто уравнение \eqref{eq:relax_function} переписывают в терминах, аналогичных константам Ламе из классической теории упругости. Для этого можно сделать замену:
+\begin{equation}
+    \label{eq:lame_mu}
+    \mu(t) = \frac{G_s(t)}{2},
+\end{equation}
+\begin{equation}
+    \label{eq:lame_k}
+    k(t) = \frac{G_b(t)}{3},
+\end{equation}
+\begin{equation}
+    \label{eq:lame_lambda}
+    \lambda(t) = \frac{G_k(t) - G_s(t)}{3}  = k(t) - \frac{2}{3} \mu(t).
+\end{equation}
+
+Тогда подставив \eqref{eq:lame_mu}, \eqref{eq:lame_k}, \eqref{eq:lame_lambda} в соотношение \eqref{eq:relax_function} получим:
+
+\begin{equation}
+    \label{eq:relax_tensor_lame}
+    G_{ijkl} = \lambda \delta_{ij} \delta_{kl} + \mu \left( \delta_{ik} \delta_{jl} + \delta_{il} \delta_{jk}\right)
+\end{equation}
+
+В нотации Фойгта тензор релаксации \eqref{eq:relax_tensor_lame} будет иметь такой же вид, как и в классической теории упругости:
+
+\begin{equation*}
+    G = \left(\begin{array}{ccc|ccc}
+        \lambda + 2 \mu & \lambda & \lambda & 0 & 0 & 0 \\
+        \lambda & \lambda + 2 \mu & \lambda & 0 & 0 & 0 \\
+        \lambda & \lambda & \lambda + 2 \mu & 0 & 0 & 0 \\
+        \hline
+        0 & 0 & 0 & \mu & 0 & 0 \\
+        0 & 0 & 0 & 0 & \mu & 0 \\
+        0 & 0 & 0 & 0 & 0 & \mu 
+        \end{array}\right)\,
+\end{equation*}
+
+Подставим \eqref{eq:relax_tensor_lame} в \eqref{eq:hooks_law} получим следующее выражение, похожее на упругий закон Гука:
+\begin{equation}
+    \label{eq:hooks_law_lame}
+    \sigma_{ij} = \delta_{ij} \; \lambda \ast \frac{\partial \varepsilon_{kk}}{\partial t} + 2 \mu \ast \frac{\partial \varepsilon_{ij}}{\partial t}
+\end{equation}
+
+Для модели стандартного линейного тела (см. \cite{Mainardi,Carcione}), используя $\tau$-метод (см. \cite{Bohlen}), выводятся функции $\mu(t)$ и $k(t)$ в виде:
+
+\begin{equation}
+    \label{eq:mu}
+    \mu(t) = M_s \left[ 1 - \left(1 - \frac{\tau_s}{\tau}\right) \exp \left( - \frac{t}{\tau} \right)\right] H (t) = \hat{\mu}(t) \; H(t),
+\end{equation}
+
+\begin{equation}
+    \label{eq:k}
+    k(t) = M_b \left[ 1 - \left(1 - \frac{\tau_b}{\tau}\right) \exp \left( - \frac{t}{\tau} \right)\right] H (t) = \hat{k}(t) \; H(t),
+\end{equation}
+где $H(t)$ функция Хэвисайда.
+
+    Также введем следущее обозначение:
+    \begin{equation}
+        \hat{\lambda}(t) = \hat{k}(t) - \frac{2}{3}\hat{\mu}(t)
+    \end{equation}
+
+Тогда уравнение \eqref{eq:hooks_law_lame} можно переписать в виде:
+\begin{equation}
+    \label{eq:hooks_law_hat}
+    \sigma_{ij}(t) = \delta_{ij} \int_0^t \hat{\lambda}(t - s) \; \frac{\partial \varepsilon_{kk}(s)}{\partial s} ds + 2 \int_0^t \hat{\mu}(t - s) \; \frac{\partial \varepsilon_{ij}(s)}{\partial s} ds  
+\end{equation}
+
+Теперь выведем дифференциальное уравнение движения в виде системы дифференциальных уравнений в частных производных 1-го порядка.
+
+Проинтегрируем по частям \eqref{eq:hooks_law_hat}:
+
+\begin{equation}
+    \label{eq:hooks_law_int_by_part}
+    \begin{aligned}
+        \sigma_{ij}(t) = \; \delta_{ij} &\left\{\hat{\lambda}(0) \; \varepsilon_{kk}(t) + \int_0^t \frac{\partial \hat{\lambda}(t - s)}{\partial s}  \varepsilon_{kk}(s) ds \right\} + \\
+        + & 2 \left\{\hat{\mu}(0) \; \varepsilon_{ij}(t) + \int_0^t \frac{\partial \hat{\mu}(t - s)}{\partial s}  \varepsilon_{ij}(s) ds \right\}
+    \end{aligned}
+\end{equation}
+
+Продифференцируем \eqref{eq:hooks_law_int_by_part} по $t$:
+\begin{equation}
+    \label{eq:hooks_law_int_by_part_differentiate}
+    \begin{aligned}
+        \frac{\partial \sigma_{ij}}{\partial t}  = \; \delta_{ij} &\left\{\hat{\lambda}(0) \; \frac{\partial \varepsilon_{kk}}{\partial t}  + \frac{d}{dt} \int_0^t \frac{\partial \hat{\lambda}(t - s)}{\partial s}  \varepsilon_{kk}(s) ds \right\} + \\
+        + & 2 \left\{\hat{\mu}(0) \; \frac{\partial \varepsilon_{ij}}{\partial t} + \frac{d}{dt} \int_0^t \frac{\partial \hat{\mu}(t - s)}{\partial s}  \varepsilon_{ij}(s) ds \; \right\}
+    \end{aligned}
+\end{equation}
+
+Заметим, что:
+\begin{equation}
+    \label{eq:mu_t}
+    \frac{\partial \hat{\mu}}{\partial t} = \frac{M_s}{\tau} \left[1 - \frac{\tau_s}{\tau} \right] \exp \left( - \frac{t}{\tau}\right), \; \text{причем} \;  \frac{\partial^n \hat{\mu}}{\partial^n t} = (-1)^{n - 1} \frac{1}{\tau^{n-1}} \frac{\partial \hat{\mu}}{\partial t}, \; n \geq 2. 
+\end{equation}
+
+Аналогично,
+\begin{equation}
+    \label{eq:k_t}
+    \frac{\partial \hat{k}}{\partial t} = \frac{M_b}{\tau} \left[1 - \frac{\tau_b}{\tau} \right] \exp \left( - \frac{t}{\tau}\right)  \; \text{и} \;  \frac{\partial^n \hat{k}}{\partial^n t} = (-1)^{n - 1} \frac{1}{\tau^{n-1}} \frac{\partial \hat{k}}{\partial t}, \; n \geq 2. 
+\end{equation}
+
+
+
+Введем новые переменные:
+\begin{equation*}
+    \begin{aligned}
+        r_{ij} &= \delta_{ij} \; \frac{d}{dt} \int_0^t \frac{\partial \hat{\lambda}(t - s)}{\partial s}  \varepsilon_{kk}(s) ds + 2 \frac{d}{dt} \int_0^t \frac{\partial \hat{\mu}(t - s)}{\partial s}  \varepsilon_{ij}(s) ds = \\
+           & = \delta_{ij} \left[\; \frac{d \hat{\lambda}}{d t}\Big{|}_{t = 0} \;  \; \varepsilon_{kk} (t) + \int_0^t \frac{\partial^2 \hat{\lambda}(t - s)}{\partial^2 s} \varepsilon_{kk}(s) ds \right] + \\ 
+           & + 2 \left[ \frac{d \hat{\mu}}{d t}\Big{|}_{t = 0} \;  \varepsilon_{ij} + \int_0^t \frac{\partial^2 \hat{\mu}(t - s)}{\partial^2 s} \varepsilon_{ij}(s) ds \right] 
+    .\end{aligned}
+\end{equation*}
+
+Используя \eqref{eq:mu_t} и \eqref{eq:k_t} можно записать:
+
+\begin{equation}
+    \label{eq:r_rare}
+    \begin{aligned}
+        r_{ij} &= \delta_{ij} \left[\; \frac{d \hat{\lambda}}{d t}\Big{|}_{t = 0} \;  \; \varepsilon_{kk} (t) - \frac{1}{\tau} \int_0^t \frac{\partial \hat{\lambda}(t - s)}{\partial s} \varepsilon_{kk}(s) ds \right] + \\ 
+           & + 2 \left[ \frac{d \hat{\mu}}{d t}\Big{|}_{t = 0} \;  \varepsilon_{ij} - \frac{1}{\tau} \int_0^t \frac{\partial \hat{\mu}(t - s)}{\partial s} \varepsilon_{ij}(s) ds \right].
+    \end{aligned}
+\end{equation}
+
+Продифференцируем \eqref{eq:r_rare} по времени:
+
+\begin{equation*}
+    \begin{aligned}
+        \frac{d r_{ij}}{dt} &= \delta_{ij} \left[\; \frac{d \hat{\lambda}}{d t}\Big{|}_{t = 0} \;  \; \frac{d \varepsilon_{kk}}{dt}  (t) - \frac{1}{\tau} \frac{d}{dt} \int_0^t \frac{\partial \hat{\lambda}(t - s)}{\partial s} \varepsilon_{kk}(s) ds \right] + \\ 
+           & + 2 \left[\frac{d \hat{\mu}}{d t}\Big{|}_{t = 0} \; \frac{d \varepsilon_{ij}}{dt}  - \frac{1}{\tau} \frac{d}{dt} \int_0^t \frac{\partial \hat{\mu}(t - s)}{\partial s} \varepsilon_{ij}(s) ds \right].
+    \end{aligned}
+\end{equation*}
+
+Теперь имеем два случая:
+\begin{equation}
+    \label{eq:brain_funct}
+    \begin{aligned}
+        1.& \; i = j \Rightarrow \frac{dr_{ii}}{dt} =    \left(\frac{M_b}{\tau} \left[1 - \frac{\tau_b}{\tau} \right] - \frac{2}{3} M_s \left[1 - \frac{\tau_s}{\tau}\right] \right) \frac{d \varepsilon_{kk}}{dt} + \\
+        &\qquad +\frac{2 M_s}{\tau} \left[1 - \frac{\tau_s}{\tau} \right] \frac{d \varepsilon_{ii}}{dt} - \frac{1}{\tau} r_{ii} \\
+        2.& \; i \neq j \Rightarrow \frac{dr_{ij}}{dt} = \frac{2 M_s}{\tau} \left[1 - \frac{\tau_s}{\tau} \right] \frac{d \varepsilon_{ij}}{dt} - \frac{1}{\tau} r_{ij} 
+    \end{aligned}
+\end{equation}
+
+Переменные $r_{ij}$ отвечают за историю процесса, поэтому и называются функциями памяти. Если бы они равнялись нулю, то мы бы получили классическое формулы из теории упругости.
+
+В таком случае уравнение \eqref{eq:hooks_law_int_by_part_differentiate} будет иметь вид:
+\begin{equation}
+    \label{eq:hooks_law_final}
+    \begin{aligned}
+        \frac{\partial \sigma_{ij}}{\partial t}  = \; \delta_{ij} \left( M_b\frac{\tau_b}{\tau} - \frac{2}{3} M_s \frac{\tau_s}{\tau} \right)  \frac{\partial \varepsilon_{kk}}{\partial t} + 2 M_s \frac{\tau_s}{\tau} \frac{\partial \varepsilon_{ij}}{\partial t} + r_{ij}
+    \end{aligned}
+\end{equation}
+
+Запишем уравнение баланса импульса для сплошной среды: 
+\begin{equation}
+    \label{eq:newton_law}
+    \rho \frac{\partial^2 u_{i}}{\partial^2 t} = \frac{\partial \sigma_{ij}}{\partial x_j}  + f_{i} \quad \text{или} \quad \rho \frac{\partial v_{i}}{\partial t}  = \frac{\partial \sigma_{ij}}{\partial x_j}  + f_{i},
+\end{equation}
+где $u_{i}, v_{i}$ компоненты векторов перемещения и скорости перемещения, $\sigma_{ij}$ компонент симметричного тензора напряжения, $f_i$ компонент вектора внешних массовых сил, $\rho$ плотность среды.
+
+Таким образом, имеем замкнутую систему дифференциальных уравнений \eqref{eq:brain_funct}, \eqref{eq:hooks_law_final} и \eqref{eq:newton_law}, которая описывает движение в вязкоупругой среде.
+
+
+\newpage
 \section*{Заключение}
 \addcontentsline{toc}{section}{Заключение}
 
@@ -22,7 +224,14 @@
 
 \addcontentsline{toc}{section}{Список литературы}
 
-\begin{thebibliography}{5}
+\begin{thebibliography}{9}
+    \addcontentsline{toc}{section}{\refname}
+    \bibitem{Christenses} Введение в теорию вязкоупругости / Р. Кристенсен ; пер. с англ. М. И. Рейтмана ; под ред. Г. С. Шапиро, 1974. - 338 с
+    \bibitem{Mainardi} Fractional Calculus and Waves in Linear Viscoelasticity
+    \bibitem{Carcione} Wave in real solid
+    \bibitem{Borcherdt} Viscoelastic waves and rays in layered media
+    \bibitem{Bohlen} T. Bohlen, “Parallel 3-D viscoelastic finite difference seismic modelling,” Comput. Geosci. 28, 887–899
+    (2002).
 \end{thebibliography}
 
 \end{document}

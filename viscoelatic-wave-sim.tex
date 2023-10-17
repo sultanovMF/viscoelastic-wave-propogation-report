@@ -33,7 +33,7 @@
 
 Также будем считать, что история деформаций ($\varepsilon_{ij}(t)$) предполагается непрерывной, а функционал преобразующий историю изменения деформаций ($\varepsilon_{ij}(t)$) в соответствующую историю изменения напряжений ($\sigma_{ij}(t)$) предполагается линейным (подробнее см. \cite{Christenses})
 
-Тогда в самом общем виде этот функционал, который будем называть определяющим уравнением, может быть записывается следующим образом:
+Тогда в самом общем виде этот функционал, который будем называть определяющим уравнением, записывается следующим образом:
 
 \begin{equation}
     \label{eq:hooks_law}
@@ -130,8 +130,8 @@ $\delta_{ij}$ --~  символ Кронекера;
 \begin{equation}
     \label{eq:hooks_law_int_by_part}
     \begin{aligned}
-        \sigma_{ij}(t) = \; \delta_{ij} &\left\{\hat{\lambda}(0) \; \varepsilon_{kk}(t) + \int_0^t \frac{\partial \hat{\lambda}(t - s)}{\partial s}  \varepsilon_{kk}(s) ds \right\} + \\
-        + & 2 \left\{\hat{\mu}(0) \; \varepsilon_{ij}(t) + \int_0^t \frac{\partial \hat{\mu}(t - s)}{\partial s}  \varepsilon_{ij}(s) ds \right\}
+        \sigma_{ij}(t) = \; \delta_{ij} & \hat{\lambda}(0) \; \varepsilon_{kk}(t) + \delta_{ij} \int_0^t \frac{\partial \hat{\lambda}(t - s)}{\partial s}  \varepsilon_{kk}(s) ds + \\
+        + & 2 \hat{\mu}(0) \; \varepsilon_{ij}(t) + 2 \int_0^t \frac{\partial \hat{\mu}(t - s)}{\partial s}  \varepsilon_{ij}(s) ds 
     \end{aligned}
 \end{equation}
 
@@ -139,15 +139,15 @@ $\delta_{ij}$ --~  символ Кронекера;
 \begin{equation}
     \label{eq:hooks_law_int_by_part_differentiate}
     \begin{aligned}
-        \frac{\partial \sigma_{ij}}{\partial t}  = \; \delta_{ij} &\left\{\hat{\lambda}(0) \; \frac{\partial \varepsilon_{kk}}{\partial t}  + \frac{d}{dt} \int_0^t \frac{\partial \hat{\lambda}(t - s)}{\partial s}  \varepsilon_{kk}(s) ds \right\} + \\
-        + & 2 \left\{\hat{\mu}(0) \; \frac{\partial \varepsilon_{ij}}{\partial t} + \frac{d}{dt} \int_0^t \frac{\partial \hat{\mu}(t - s)}{\partial s}  \varepsilon_{ij}(s) ds \; \right\}
+        \frac{\partial \sigma_{ij}}{\partial t}  = \; \delta_{ij} & \hat{\lambda}(0) \; \frac{\partial \varepsilon_{kk}}{\partial t}  + \delta_{ij} \frac{d}{dt} \int_0^t \frac{\partial \hat{\lambda}(t - s)}{\partial s}  \varepsilon_{kk}(s) ds + \\
+        + & 2 \hat{\mu}(0) \; \frac{\partial \varepsilon_{ij}}{\partial t} + 2 \frac{d}{dt} \int_0^t \frac{\partial \hat{\mu}(t - s)}{\partial s}  \varepsilon_{ij}(s) ds 
     \end{aligned}
 \end{equation}
 
 Заметим, что:
 \begin{equation}
     \label{eq:mu_t}
-    \frac{\partial \hat{\mu}}{\partial t} = \frac{M_s}{\tau} \left[1 - \frac{\tau_s}{\tau} \right] \exp \left( - \frac{t}{\tau}\right), \; \text{причем} \;  \frac{\partial^n \hat{\mu}}{\partial^n t} = (-1)^{n - 1} \frac{1}{\tau^{n-1}} \frac{\partial \hat{\mu}}{\partial t}, \; n \geq 2. 
+    \frac{\partial \hat{\mu}}{\partial t} = \frac{M_s}{\tau} \left[1 - \frac{\tau_s}{\tau} \right] \exp \left( - \frac{t}{\tau}\right), \; \text{и} \;  \frac{\partial^n \hat{\mu}}{\partial^n t} = (-1)^{n - 1} \frac{1}{\tau^{n-1}} \frac{\partial \hat{\mu}}{\partial t}, \; n \geq 2. 
 \end{equation}
 
 Аналогично,
@@ -214,9 +214,83 @@ $\delta_{ij}$ --~  символ Кронекера;
 где $u_{i}, v_{i}$ компоненты векторов перемещения и скорости перемещения, $\sigma_{ij}$ компонент симметричного тензора напряжения, $f_i$ компонент вектора внешних массовых сил, $\rho$ плотность среды.
 
 Таким образом, подстав в \eqref{eq:brain_funct}, \eqref{eq:hooks_law_final} продифференцированное по времени соотношение \eqref{eq:strain_u_rel}, будем иметь замкнутую систему дифференциальных уравнений \eqref{eq:brain_funct}, \eqref{eq:hooks_law_final} и \eqref{eq:newton_law}, описывающую движение в вязкоупругой среде.
+Эту систему можно представить в следующим виде:
+\begin{equation}
+    \label{eq:system_on_v}
+    \renewcommand\arraystretch{1.6}
+    \frac{\partial }{\partial t}\, 
+    \begin{pmatrix}
+        v_1 \\
+        v_2 \\
+        v_3
+    \end{pmatrix} =
+    \frac{1}{\rho} 
+    \begin{pmatrix} 
+        \frac{\partial \sigma_{11}}{\partial x_1} +  \frac{\partial \sigma_{12}}{\partial x_2} + \frac{\partial \sigma_{13}}{\partial x_3} \\
+        \frac{\partial \sigma_{21}}{\partial x_1} +  \frac{\partial \sigma_{22}}{\partial x_2} + \frac{\partial \sigma_{23}}{\partial x_3}\, \\
+        \frac{\partial \sigma_{31}}{\partial x_1} +  \frac{\partial \sigma_{32}}{\partial x_2} + \frac{\partial \sigma_{33}}{\partial x_3}
+    \end{pmatrix},
+\end{equation}
+\begin{equation}
+    \label{eq:system_on_sigma}
+    \renewcommand\arraystretch{1.6}
+    \frac{\partial }{\partial t}\, 
+    \begin{pmatrix}
+        \sigma_{11} \\
+        \sigma_{22} \\
+        \sigma_{33} \\
+        \sigma_{23} \\
+        \sigma_{13} \\
+        \sigma_{12}
+    \end{pmatrix} = P_1
+    \begin{pmatrix} 
+    \frac{\partial u_1}{\partial x_1} \\
+    \frac{\partial u_2}{\partial x_2} \\
+    \frac{\partial u_3}{\partial x_3} \\
+    \frac{\partial u_2}{\partial x_3} + \frac{\partial u_3}{\partial x_2} \\
+    \frac{\partial u_3}{\partial x_1} + \frac{\partial u_1}{\partial x_3} \\
+    \frac{\partial u_1}{\partial x_2} + \frac{\partial u_2}{\partial x_1}
+    \end{pmatrix} +
+    \begin{pmatrix} 
+    r_{11} \\
+    r_{22} \\
+    r_{33} \\
+    r_{23} \\
+    r_{12} \\
+    r_{12} 
+    \end{pmatrix},
+\end{equation}
 
-
-
+\begin{equation}
+    \label{eq:system_on_r}
+    \renewcommand\arraystretch{1.6}
+    \tau \frac{\partial }{\partial t}
+    \begin{pmatrix} 
+        r_{11} \\
+        r_{22} \\
+        r_{33} \\
+        r_{23} \\
+        r_{12} \\
+        r_{12} 
+    \end{pmatrix} 
+    = - P_2 
+    \begin{pmatrix} 
+        \frac{\partial u_1}{\partial x_1} \\
+        \frac{\partial u_2}{\partial x_2} \\
+        \frac{\partial u_3}{\partial x_3} \\
+        \frac{\partial u_2}{\partial x_3} + \frac{\partial u_3}{\partial x_2} \\
+        \frac{\partial u_3}{\partial x_1} + \frac{\partial u_1}{\partial x_3} \\
+        \frac{\partial u_1}{\partial x_2} + \frac{\partial u_2}{\partial x_1}
+        \end{pmatrix} -
+        \begin{pmatrix} 
+        r_{11} \\
+        r_{22} \\
+        r_{33} \\
+        r_{23} \\
+        r_{12} \\
+        r_{12} 
+        \end{pmatrix},
+\end{equation}
 \newpage
 \section*{Заключение}
 \addcontentsline{toc}{section}{Заключение}
